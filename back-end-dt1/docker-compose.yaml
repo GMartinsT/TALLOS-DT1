@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  api:
+    build: .
+    volumes:
+      - .:/src/api
+    working_dir: /api
+    ports:
+      - 3000:3000
+    command: ['npm', 'run', 'start:prod']
+    restart: always
+
+  database:
+    container_name: db-dt1
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - 8081:8081
