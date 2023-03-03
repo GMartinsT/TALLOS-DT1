@@ -10,6 +10,6 @@ export class AppController {
 
   @Get('xuxu')
   getXuxu(): string {
-    return String('xuxu')
+    return String('xuxa')
   }
 }

@@ -1,19 +1,15 @@
 import { IsNotEmpty, IsString, IsEmail } from 'class-validator';
 import { Exclude } from 'class-transformer';
-import { UserNameValidate } from './user.name.validate';
-export class User {
-    id: number;
+import { Document } from 'mongoose';
+export class User extends Document {
 
-    @UserNameValidate({
-        message: "O nome de usuário precisa ser único."
-    })
     @IsNotEmpty({
         message: 'Nome de usuário deve ser único.'
     })
     @IsString({
-        message: 'nomeDeUsuario precisa ser uma string.'
+        message: 'O nome precisa ser uma string.'
     })
-    userName: string;
+    name: string;
 
     @IsEmail({}, {
         message: 'O e-mail precisa ser um endereço válido.'
@@ -27,11 +23,6 @@ export class User {
         message: 'A senha é obrigatório.'
     })
     password: string;
-
-    @IsNotEmpty({
-        message: 'nomeCompleto é obrigatório.'
-    })
-    fullName: string;
 
     @IsNotEmpty({
         message: 'O cargo é obrigatório'

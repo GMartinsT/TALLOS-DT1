@@ -1,26 +1,33 @@
 import { Injectable } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
 import { User } from "./user.entity";
+
 
 @Injectable()
 export class UserService {
-    private users: Array<User> = [{
-        id: 1,
-        userName: 'Guilherme',
-        email: 'guilherme@mail.com',
-        password: '123456',
-        fullName: 'Guilherme Martins',
-        role: 'dev'
-    }]
 
-    public create(user: User): User {
-        this.users.push(user)
+    constructor(@InjectModel('User') private userModel: Model<User>) {}
 
-        return user;
+    async getAll() {
+        return await this.userModel.find().exec();
     }
 
-    public searchByUsername(userName: string): User {
-        const userFound = this.users.find(user => user.userName == userName);
+    async getById(id: string) {
+        return await this.userModel.findById(id).exec();
+    }
 
-        return userFound
+    async create(user: User) {
+        const createdUser = new this.userModel(user);
+        return await createdUser.save();
+    }
+
+    async update(id: string, user: User) {
+        await this.userModel.updateOne({_id: id}, user).exec();
+        return this.getById(id);
+    }
+
+    async delete(id: string) {
+        return await this.userModel.deleteOne({_id: id}).exec();
     }
 }

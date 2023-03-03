@@ -1,15 +1,7 @@
 FROM node:16-alpine
 
-WORKDIR /src/api
-
-COPY package.json .
-COPY package-lock.json .
-
-RUN npm install --quiet
+WORKDIR /usr/back-dt1/api
 
 COPY . .
-COPY ./.env.prod ./.env
-
-CMD ["npm", "run", "start:dev"]
 
 EXPOSE 3000

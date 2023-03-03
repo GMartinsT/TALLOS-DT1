@@ -3,14 +3,17 @@ version: '3.7'
 services:
   api:
     build: .
+    entrypoint: sh ./.docker/entrypoint.sh
+    container_name: back-dt1
     volumes:
-      - .:/src/api
-    working_dir: /api
+      - .:/usr/back-dt1/api
+    working_dir: /usr/back-dt1/api
     ports:
       - 3000:3000
-    command: ['npm', 'run', 'start:prod']
     restart: always
-
+    tty: true
+    networks:
+      - project
   database:
     container_name: db-dt1
     image: mongo
@@ -19,4 +22,14 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
     ports:
-      - 8081:8081
+      - 27017:27017
+    volumes:
+      - mongodb_server_data:/data/db
+    networks:
+      - project  
+volumes:
+  mongodb_server_data:
+
+networks:
+  project:
+    driver: bridge
