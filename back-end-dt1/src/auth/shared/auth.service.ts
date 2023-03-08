@@ -13,8 +13,8 @@ export class AuthService {
     async validateUser(userEmail: string, password: string) {
         const user = await this.userService.getByEmail(userEmail);
         if(user && user.password === password) {
-            const { password, ...result } = user;
-            return result;
+            const { _id, name, email, role } = user;
+            return { id: _id, name, email, role};
         }
         return null;
     }
